@@ -1,12 +1,3 @@
-#:sdk Aspire.AppHost.Sdk@9.5.2
-#:package Aspire.Hosting.AppHost@9.5.2
-#:package Aspire.Hosting.Azure.ServiceBus@9.5.2
-#:package Aspire.Hosting.Kubernetes@9.5.2-preview.1.25522.3
-#:package Aspire.Hosting.Keycloak@9.5.2-preview.1.25522.3
-#:package Aspire.Hosting.PostgreSQL@9.5.2
-#:package Aspire.Hosting.NodeJS@9.5.2
-#:package Aspire.Hosting.Redis@9.5.2
-
 var builder = DistributedApplication.CreateBuilder(args);
 
 // Backend services (Presentations)
@@ -22,9 +13,9 @@ var costs = builder.AddProject(
     name: "costs",
     projectPath: "../Backend/Costs/Costs.Presentation/Costs.Presentation.csproj");
 
-// Identity (Keycloak)
+// Identity (Keycloak) — use stable port in dev
 var keycloak = builder.AddKeycloak("keycloak", 8080)
-    .WithDataVolume(); // persist dev realm/users between runs
+    .WithDataVolume();
 
 // Databases (PostgreSQL)
 var projectsPostgres = builder.AddPostgres("projects-postgres")
@@ -55,10 +46,19 @@ var projectsQueue = serviceBus.AddServiceBusQueue("projects-queue");
 var costsQueue = serviceBus.AddServiceBusQueue("costs-queue");
 var gatewayQueue = serviceBus.AddServiceBusQueue("gateway-queue");
 
-// References: each service publishes to its topic and consumes from its queue
-projects.WithReference(projectsTopic).WithReference(projectsQueue);
-costs.WithReference(costsTopic).WithReference(costsQueue);
+// References: DBs + messaging per service
+projects
+    .WithReference(projectsDb)
+    .WithReference(projectsTopic)
+    .WithReference(projectsQueue);
+
+costs
+    .WithReference(costsDb)
+    .WithReference(costsTopic)
+    .WithReference(costsQueue);
+
 gateway
+    .WithReference(gatewayDb)
     .WithReference(gatewayTopic)
     .WithReference(gatewayQueue)
     .WithReference(keycloak)
