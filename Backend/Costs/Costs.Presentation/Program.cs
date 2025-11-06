@@ -1,6 +1,8 @@
+using Costs.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
-// Infrastructure registration
-Costs.Infrastructure.HostingBuilderExtensions.AddInfra(builder);
+// Register infrastructure (includes messaging + handlers)
+builder.AddInfra();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
