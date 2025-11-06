@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Hosting;
 using Costs.Infrastructure.Observability;
 using Costs.Infrastructure.Persistence;
+using Costs.Infrastructure.Messaging;
 
 namespace Costs.Infrastructure;
 
@@ -10,6 +11,7 @@ public static class HostingBuilderExtensions
     {
         builder.AddOpenTelemetry();
         builder.AddPersistence();
+        builder.AddMessaging();
         return builder;
     }
 }
