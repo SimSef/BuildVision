@@ -1,6 +1,8 @@
 using Gateway.Infrastructure;
 using Gateway.Infrastructure.Persistence;
+
 using Microsoft.AspNetCore.Authentication;
+
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddInfra();
