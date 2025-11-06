@@ -21,4 +21,15 @@
     <!-- <PackageReference Include="Aspire.Hosting.Kubernetes" Version="9.5.2-preview.1.25522.3" /> -->
   </ItemGroup>
 
+  <!-- Ensure npm deps for JS apps are installed during inner-loop builds -->
+  <Target Name="RestoreNpm" BeforeTargets="Build" Condition=" '$(DesignTimeBuild)' != 'true' ">
+    <ItemGroup>
+      <PackageJsons Include="../Frontend/**/package.json" />
+    </ItemGroup>
+    <Message Importance="High" Text="Checking npm dependencies for: %(PackageJsons.Identity)" />
+    <!-- Install if node_modules is missing; fall back to npm install if npm ci fails -->
+    <Exec Command="bash -lc 'test -d node_modules || (npm ci || npm install)'" 
+          WorkingDirectory="%(PackageJsons.RootDir)%(PackageJsons.Directory)" />
+  </Target>
+
 </Project>
