@@ -59,6 +59,11 @@ internal sealed class OutboxPublisherHostedService(
                             MessageId = evt.CeId
                         };
 
+                        if (!string.IsNullOrWhiteSpace(evt.CeTraceparent))
+                            message.ApplicationProperties["traceparent"] = evt.CeTraceparent;
+                        if (!string.IsNullOrWhiteSpace(evt.CeTracestate))
+                            message.ApplicationProperties["tracestate"] = evt.CeTracestate;
+
                         using var activity = OutboxPublisherHostedServiceOtel.StartPublish(
                             destination,
                             message.MessageId!,
