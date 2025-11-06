@@ -11,6 +11,7 @@ public static class MessagingRegistration
     {
         builder.AddAzureServiceBusClient(connectionName: "messaging");
         builder.Services.AddHostedService<OutboxPublisherHostedService>();
+        builder.Services.AddHostedService<ProjectsEventsSubscriberHostedService>();
         return builder;
     }
 }
