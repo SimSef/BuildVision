@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <!-- Enable Roslyn analyzers and surface IDE* diagnostics in builds so editors pick them up -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <!-- Report as warnings (not errors) by default; editors will still show in Problems -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Ensure IDE* diagnostics are not escalated to errors elsewhere -->
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);IDE*</WarningsNotAsErrors>
+  </PropertyGroup>
+</Project>
+
