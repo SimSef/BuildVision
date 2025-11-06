@@ -66,6 +66,19 @@ gateway
     .WithReference(keycloak)
     .WaitFor(keycloak);
 
+// SPA (Next.js / React) — run via npm script and expose HTTP
+var spa = builder.AddNpmApp(
+        name: "spa",
+        workingDirectory: "../Frontend/buildvisionspa")
+    .WithNpmScript("dev")
+    // Next.js reads PORT; Aspire will set this env var for the process
+    .WithHttpEndpoint(env: "PORT", port: 3000)
+    .WithExternalHttpEndpoints()
+    .WithReference(gateway)
+    .WithReference(keycloak)
+    .WaitFor(gateway)
+    .WaitFor(keycloak);
+
 // Subscriptions with auto-forward to per-service queues
 // projects consumes from costs and gateway topics
 costsTopic.AddServiceBusSubscription("projects-from-costs")

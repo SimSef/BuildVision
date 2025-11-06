@@ -16,10 +16,9 @@
     <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.5.2" />
     <PackageReference Include="Aspire.Hosting.Redis" Version="9.5.2" />
     <PackageReference Include="Aspire.Hosting.Keycloak" Version="9.5.2-preview.1.25522.3" />
-    <!-- Optional: Kubernetes/NodeJS if needed later
-    <PackageReference Include="Aspire.Hosting.Kubernetes" Version="9.5.2-preview.1.25522.3" />
     <PackageReference Include="Aspire.Hosting.NodeJS" Version="9.5.2" />
-    -->
+    <!-- Optional: Kubernetes if needed later -->
+    <!-- <PackageReference Include="Aspire.Hosting.Kubernetes" Version="9.5.2-preview.1.25522.3" /> -->
   </ItemGroup>
 
 </Project>
