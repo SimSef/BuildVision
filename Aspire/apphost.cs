@@ -2,6 +2,7 @@
 #:package Aspire.Hosting.AppHost@9.5.2
 #:package Aspire.Hosting.Azure.ServiceBus@9.5.2
 #:package Aspire.Hosting.Kubernetes@9.5.2-preview.1.25522.3
+#:package Aspire.Hosting.Keycloak@9.5.2-preview.1.25522.3
 #:package Aspire.Hosting.PostgreSQL@9.5.2
 #:package Aspire.Hosting.NodeJS@9.5.2
 #:package Aspire.Hosting.Redis@9.5.2
@@ -20,6 +21,10 @@ var projects = builder.AddProject(
 var costs = builder.AddProject(
     name: "costs",
     projectPath: "../Backend/Costs/Costs.Presentation/Costs.Presentation.csproj");
+
+// Identity (Keycloak)
+var keycloak = builder.AddKeycloak("keycloak", 8080)
+    .WithDataVolume(); // persist dev realm/users between runs
 
 // Databases (PostgreSQL)
 var projectsPostgres = builder.AddPostgres("projects-postgres")
@@ -53,7 +58,11 @@ var gatewayQueue = serviceBus.AddServiceBusQueue("gateway-queue");
 // References: each service publishes to its topic and consumes from its queue
 projects.WithReference(projectsTopic).WithReference(projectsQueue);
 costs.WithReference(costsTopic).WithReference(costsQueue);
-gateway.WithReference(gatewayTopic).WithReference(gatewayQueue);
+gateway
+    .WithReference(gatewayTopic)
+    .WithReference(gatewayQueue)
+    .WithReference(keycloak)
+    .WaitFor(keycloak);
 
 // Subscriptions with auto-forward to per-service queues
 // projects consumes from costs and gateway topics
