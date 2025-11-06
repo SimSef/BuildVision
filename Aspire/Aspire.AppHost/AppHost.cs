@@ -48,18 +48,24 @@ var gatewayQueue = serviceBus.AddServiceBusQueue("gateway-queue");
 
 // References: DBs + messaging per service
 projects
+    .WithReference(serviceBus)
+    .WaitFor(serviceBus)
     .WithReference(projectsDb)
     .WaitFor(projectsDb)
     .WithReference(projectsTopic)
     .WithReference(projectsQueue);
 
 costs
+    .WithReference(serviceBus)
+    .WaitFor(serviceBus)
     .WithReference(costsDb)
     .WaitFor(costsDb)
     .WithReference(costsTopic)
     .WithReference(costsQueue);
 
 gateway
+    .WithReference(serviceBus)
+    .WaitFor(serviceBus)
     .WithReference(gatewayDb)
     .WaitFor(gatewayDb)
     .WithReference(gatewayTopic)
