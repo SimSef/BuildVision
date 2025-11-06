@@ -92,13 +92,13 @@ var spa = builder.AddNpmApp(
 costsTopic.AddServiceBusSubscription("projects-from-costs")
     .WithProperties(s =>
     {
-        s.MaxDeliveryCount = 20;
+        s.MaxDeliveryCount = 10;
         s.ForwardTo = "projects-queue";
     });
 gatewayTopic.AddServiceBusSubscription("projects-from-gateway")
     .WithProperties(s =>
     {
-        s.MaxDeliveryCount = 20;
+        s.MaxDeliveryCount = 10;
         s.ForwardTo = "projects-queue";
     });
 
@@ -106,13 +106,13 @@ gatewayTopic.AddServiceBusSubscription("projects-from-gateway")
 projectsTopic.AddServiceBusSubscription("costs-from-projects")
     .WithProperties(s =>
     {
-        s.MaxDeliveryCount = 20;
+        s.MaxDeliveryCount = 10;
         s.ForwardTo = "costs-queue";
     });
 gatewayTopic.AddServiceBusSubscription("costs-from-gateway")
     .WithProperties(s =>
     {
-        s.MaxDeliveryCount = 20;
+        s.MaxDeliveryCount = 10;
         s.ForwardTo = "costs-queue";
     });
 
@@ -120,13 +120,13 @@ gatewayTopic.AddServiceBusSubscription("costs-from-gateway")
 projectsTopic.AddServiceBusSubscription("gateway-from-projects")
     .WithProperties(s =>
     {
-        s.MaxDeliveryCount = 20;
+        s.MaxDeliveryCount = 10;
         s.ForwardTo = "gateway-queue";
     });
 costsTopic.AddServiceBusSubscription("gateway-from-costs")
     .WithProperties(s =>
     {
-        s.MaxDeliveryCount = 20;
+        s.MaxDeliveryCount = 10;
         s.ForwardTo = "gateway-queue";
     });
 
