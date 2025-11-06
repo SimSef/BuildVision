@@ -12,7 +12,6 @@ internal sealed class OutboxPublisherHostedService(
     IServiceScopeFactory scopeFactory,
     ServiceBusClient client) : BackgroundService
 {
-    private const int BatchSize = 10;
     private readonly Dictionary<string, ServiceBusSender> _senders = new(StringComparer.OrdinalIgnoreCase);
 
     private ServiceBusSender GetSender(string destination)
@@ -35,7 +34,6 @@ internal sealed class OutboxPublisherHostedService(
                 var pending = await db.Outbox
                     .Where(x => x.Status == "PENDING")
                     .OrderBy(x => x.CreatedAt)
-                    .Take(BatchSize)
                     .ToListAsync(stoppingToken);
 
                 if (pending.Count == 0)
