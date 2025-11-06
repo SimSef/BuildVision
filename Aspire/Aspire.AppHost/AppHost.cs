@@ -1,4 +1,5 @@
 using Aspire.Hosting;
+using Aspire.Hosting.NodeJs;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
@@ -69,8 +70,8 @@ gateway
 // SPA (Next.js / React) — run via npm script and expose HTTP
 var spa = builder.AddNpmApp(
         name: "spa",
-        workingDirectory: "../Frontend/buildvisionspa")
-    .WithNpmScript("dev")
+        workingDirectory: "../Frontend/buildvisionspa",
+        scriptName: "dev")
     .WithEnvironment("BROWSER", "none")
     // Next.js reads PORT; Aspire will set this env var for the process
     .WithHttpEndpoint(env: "PORT", port: 3000)
