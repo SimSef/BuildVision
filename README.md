@@ -19,3 +19,10 @@ Notes
 
 - Local development uses the Azure Service Bus emulator and the Aspire app host.
 - This repo is a demo — focused on architecture and developer experience over feature breadth.
+
+Getting Started
+
+- Prereqs: `dotnet --version` 10.x, Node 20+ for the SPA.
+- Run the app host (single-file, inline packages):
+  - `dotnet run --project Aspire/apphost.cs`
+- Open the dashboard link printed to the console and the SPA endpoint.
