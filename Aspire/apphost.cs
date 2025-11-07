@@ -1,17 +1,26 @@
+#:sdk Aspire.AppHost.Sdk@9.5.2
+#:package Aspire.Hosting.AppHost@9.5.2
+#:package Aspire.Hosting.Azure.ServiceBus@9.5.2
+#:package Aspire.Hosting.Kubernetes@9.5.2-preview.1.25522.3
+#:package Aspire.Hosting.Keycloak@9.5.2-preview.1.25522.3
+#:package Aspire.Hosting.PostgreSQL@9.5.2
+#:package Aspire.Hosting.NodeJS@9.5.2
+#:package Aspire.Hosting.Redis@9.5.2
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 // Backend services (Presentations)
 var gateway = builder.AddProject(
     name: "gateway",
-    projectPath: "../../Backend/Gateway/Gateway.Presentation/Gateway.Presentation.csproj");
+    projectPath: "../Backend/Gateway/Gateway.Presentation/Gateway.Presentation.csproj");
 
 var projects = builder.AddProject(
     name: "projects",
-    projectPath: "../../Backend/Projects/Projects.Presentation/Projects.Presentation.csproj");
+    projectPath: "../Backend/Projects/Projects.Presentation/Projects.Presentation.csproj");
 
 var costs = builder.AddProject(
     name: "costs",
-    projectPath: "../../Backend/Costs/Costs.Presentation/Costs.Presentation.csproj");
+    projectPath: "../Backend/Costs/Costs.Presentation/Costs.Presentation.csproj");
 
 // Identity (Keycloak) — use stable port in dev
 var keycloak = builder.AddKeycloak("keycloak", 8080)
@@ -76,7 +85,7 @@ gateway
 // SPA (Next.js / React) — run via npm script and expose HTTP
 var spa = builder.AddNpmApp(
         name: "spa",
-        workingDirectory: "../../Frontend/buildvisionspa",
+        workingDirectory: "../Frontend/buildvisionspa",
         scriptName: "dev")
     .WithEnvironment("BROWSER", "none")
     // Next.js reads PORT; Aspire will set this env var for the process
